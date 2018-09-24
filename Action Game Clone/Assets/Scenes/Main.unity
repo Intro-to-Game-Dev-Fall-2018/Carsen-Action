@@ -15229,7 +15229,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.5
+  m_Mass: 2.5
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -15266,7 +15266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftScore: {fileID: 1025812168}
   rightScore: {fileID: 294903049}
-  hitStrength: 6
+  hitStrength: 0
   player1Hits: {fileID: 2008164404}
   player2Hits: {fileID: 1972738107}
   Player2Scored: 0

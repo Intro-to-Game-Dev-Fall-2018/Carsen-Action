@@ -85,7 +85,7 @@ public class BallScript : MonoBehaviour {
 			GameObject player = other.gameObject;
 			Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 			
-			rb.AddForce(new Vector2(playerRB.velocity.x, playerRB.velocity.y) * hitStrength);
+			rb.AddForce(new Vector2(0.0f, playerRB.velocity.y) * hitStrength);
 
 			if (!betweenHits)
 			{

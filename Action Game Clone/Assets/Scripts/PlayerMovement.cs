@@ -80,18 +80,18 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(new Vector2(0.0f, jumpHeight));
 		}
 
-		if (Input.GetAxis("Jump" + playerNumber) == 0 && !landed && rb.velocity.y > 0)
-		{
-			rb.gravityScale = 5;
-		}
-		else if (!landed && rb.velocity.y < 0)
-		{
-			rb.gravityScale = 4;
-		}
-		else
-		{
-			rb.gravityScale = 3;
-		}
+//		if (Input.GetAxis("Jump" + playerNumber) == 0 && !landed && rb.velocity.y > 0)
+//		{
+//			rb.gravityScale = 5;
+//		}
+//		else if (!landed && rb.velocity.y < 0)
+//		{
+//			rb.gravityScale = 4;
+//		}
+//		else
+//		{
+//			rb.gravityScale = 3;
+//		}
 		
 		
 	}
