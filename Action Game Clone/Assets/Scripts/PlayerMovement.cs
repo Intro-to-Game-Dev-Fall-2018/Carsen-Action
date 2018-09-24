@@ -10,23 +10,31 @@ public class PlayerMovement : MonoBehaviour
 	private CircleCollider2D floorSensor;
 	
 	public int playerNumber = 0;
+	public GameObject subPlayer;
 	public float moveSpeed = 1;
 	public float jumpHeight;
+	private Vector3 playerChainDistance;
 	
 	// Use this for initialization
 	void Start () {
 		if (playerNumber == 1)
-			GetComponent<SpriteRenderer>().color = Color.red;
+		{
+			GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.22f, 0.25f);
+		}
 		else if (playerNumber == 2)
-			GetComponent<SpriteRenderer>().color = Color.blue;
+		{
+			GetComponent<SpriteRenderer>().color = new Color(0.23f, 0.41f, 1f);;
+		}
 
 		rb = GetComponent<Rigidbody2D>();
+		playerChainDistance = transform.position - subPlayer.transform.position;
+
 	}
 	
 	// Update is called once per frame
 	void Update ()
-	{
-		
+	{	
+		rb.position = subPlayer.transform.position + playerChainDistance;
 	}
 
 	private void FixedUpdate()
@@ -41,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
 			landed = true;
 		}
 	}
+	
 
 	private void OnTriggerStay2D(Collider2D other)
 	{
@@ -64,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
 		float moveHorizontal = Input.GetAxis("Horizontal" + playerNumber);
 		rb.velocity = new Vector2(moveHorizontal * moveSpeed, rb.velocity.y);
 
+		
+		//Weird jump stuff, holding down the button gives a slightly higher jump than tapping it
 		if (Input.GetAxis("Jump" + playerNumber) > 0 && landed)
 		{
 			rb.AddForce(new Vector2(0.0f, jumpHeight));
@@ -81,6 +92,8 @@ public class PlayerMovement : MonoBehaviour
 		{
 			rb.gravityScale = 3;
 		}
+		
+		
 	}
 	
 	
