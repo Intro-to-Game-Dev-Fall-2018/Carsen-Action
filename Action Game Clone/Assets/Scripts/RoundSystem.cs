@@ -89,7 +89,7 @@ public class RoundSystem : MonoBehaviour
 
 	IEnumerator JustScored(int playerNumber)
 	{
-		aso.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+		aso.pitch = UnityEngine.Random.Range(0.93f, 1.11f);
 		aso.Play();
 		
 		yield return new WaitForSeconds(2.5f);
