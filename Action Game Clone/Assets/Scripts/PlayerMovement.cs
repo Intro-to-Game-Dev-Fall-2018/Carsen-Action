@@ -17,14 +17,14 @@ public class PlayerMovement : MonoBehaviour
 	
 	// Use this for initialization
 	void Start () {
-		if (playerNumber == 1)
-		{
-			GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.22f, 0.25f);
-		}
-		else if (playerNumber == 2)
-		{
-			GetComponent<SpriteRenderer>().color = new Color(0.23f, 0.41f, 1f);;
-		}
+//		if (playerNumber == 1)
+//		{
+//			GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.22f, 0.25f);
+//		}
+//		else if (playerNumber == 2)
+//		{
+//			GetComponent<SpriteRenderer>().color = new Color(0.23f, 0.41f, 1f);;
+//		}
 
 		rb = GetComponent<Rigidbody2D>();
 		playerChainDistance = transform.position - subPlayer.transform.position;
