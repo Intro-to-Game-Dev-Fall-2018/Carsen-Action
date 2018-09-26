@@ -11,20 +11,20 @@ public class BallScript : MonoBehaviour {
 	public BoxCollider2D leftScore, rightScore;
 	public float hitStrength = 1;
 	public Text player1Hits, player2Hits;
+	public float minSpeedX, minSpeedY, maxSpeedX, maxSpeedY;
 
 	private int currentHitter = 0;
 	private bool betweenHits = false;
-	//public float standingHitStrength = 3;
 
 	private Rigidbody2D rb;
 	private AudioSource aso;
-	//public GameObject player1, player2;
 
 	[HideInInspector] public bool Player2Scored = false;
 	[HideInInspector] public bool Player1Scored = false;
 	[HideInInspector] public int timesHit = 0;
 	
-	//private int timesBumped = 0;
+//	public Vector2 rbvel;
+	
 	
 	// Use this for initialization
 	void Start ()
@@ -55,6 +55,64 @@ public class BallScript : MonoBehaviour {
 		}
 	}
 
+	private void FixedUpdate()
+	{
+//		For velocity debugging:
+//		rbvel = rb.velocity;
+		
+		//Limit minimum speed so it doesn't go too slow
+		if ((rb.velocity.x < minSpeedX && rb.velocity.x > 0) || (rb.velocity.x > -minSpeedX && rb.velocity.x < 0))
+		{
+			if (rb.velocity.x > 0)
+			{
+				rb.velocity = new Vector2(minSpeedX, rb.velocity.y);
+			}
+			else if (rb.velocity.x < 0)
+			{
+				rb.velocity = new Vector2(-minSpeedX, rb.velocity.y);
+			}
+		}
+		
+		if ((rb.velocity.y < minSpeedY && rb.velocity.y > 0) || (rb.velocity.y > -minSpeedY && rb.velocity.y <= 0))
+		{
+			if (rb.velocity.y > 0)
+			{
+				rb.velocity = new Vector2(rb.velocity.x, minSpeedY);
+			}
+			else if (rb.velocity.y <= 0)
+			{
+				rb.velocity = new Vector2(rb.velocity.x, -minSpeedY);
+			}
+		}
+		
+		
+		//Limit max speed so it doesn't think its Speed Racer
+		if ((rb.velocity.x > maxSpeedX && rb.velocity.x > 0) || (rb.velocity.x < -maxSpeedX && rb.velocity.x < 0))
+		{
+			if (rb.velocity.x > 0)
+			{
+				rb.velocity = new Vector2(maxSpeedX, rb.velocity.y);
+			}
+			else if (rb.velocity.x < 0)
+			{
+				rb.velocity = new Vector2(-maxSpeedX, rb.velocity.y);
+			}
+		}
+		
+		if ((rb.velocity.y > maxSpeedY && rb.velocity.y >= 0) || (rb.velocity.y < -maxSpeedY && rb.velocity.y < 0))
+		{
+			if (rb.velocity.y > 0)
+			{
+				rb.velocity = new Vector2(rb.velocity.x, maxSpeedY);
+			}
+			else if (rb.velocity.y < 0)
+			{
+				rb.velocity = new Vector2(rb.velocity.x, -maxSpeedY);
+			}
+		}
+			
+	}
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other == leftScore)
@@ -83,9 +141,8 @@ public class BallScript : MonoBehaviour {
 		if (other.gameObject.CompareTag("Player"))
 		{
 			GameObject player = other.gameObject;
-			Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
+			//Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 			
-			rb.AddForce(new Vector2(0.0f, playerRB.velocity.y) * hitStrength);
 
 			if (!betweenHits)
 			{
