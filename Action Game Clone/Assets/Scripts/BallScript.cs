@@ -145,12 +145,13 @@ public class BallScript : MonoBehaviour {
 			GameObject player = other.gameObject;
 			aso.pitch = UnityEngine.Random.Range(0.8f, 1.2f);
 			aso.PlayOneShot(hitPlayerSound);
-			
+
 
 			if (!betweenHits)
 			{
 				StartCoroutine(HitTimer());
-
+				
+				
 				if (player.GetComponent<PlayerMovement>().playerNumber == 1)
 				{
 					if (currentHitter == 1)

@@ -95,7 +95,7 @@ public class RoundSystem : MonoBehaviour
 			//rightConfetti.SetActive(true);
 			if (pointsPlayer2 >= maxScore)
 			{
-				announcementText.text = "Player 2 Wins!";
+				announcementText.text = "PLAYER 2 WINS!";
 				announcementText.color = new Color(0.23f, 0.41f, 1f);
 				announcementText.enabled = true;
 				
@@ -114,7 +114,7 @@ public class RoundSystem : MonoBehaviour
 			//leftConfetti.SetActive(true);
 			if (pointsPlayer1 >= maxScore)
 			{
-				announcementText.text = "Player 1 Wins!";
+				announcementText.text = "PLAYER 1 WINS!";
 				announcementText.color = new Color(0.8f, 0.22f, 0.25f);
 				announcementText.enabled = true;
 				
