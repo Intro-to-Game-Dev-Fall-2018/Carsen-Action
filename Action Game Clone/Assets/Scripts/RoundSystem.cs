@@ -29,55 +29,16 @@ public class RoundSystem : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
-
-		if (ballDetection.Player2Scored && !betweenRounds)
-		{
-			pointsPlayer2 += 1;
-			betweenRounds = true;
-			rightConfetti.SetActive(true);
-			if (pointsPlayer2 >= maxScore)
-			{
-				announcementText.text = "Player 2 Wins!";
-				announcementText.color = new Color(0.23f, 0.41f, 1f);
-				announcementText.enabled = true;
-				
-				aso.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-				aso.Play();
-				
-			}
-			else
-				StartCoroutine(JustScored(2));
-
-		}
-		else if (ballDetection.Player1Scored && !betweenRounds)
-		{
-			pointsPlayer1 += 1;
-			betweenRounds = true;
-			leftConfetti.SetActive(true);
-			if (pointsPlayer1 >= maxScore)
-			{
-				announcementText.text = "Player 1 Wins!";
-				announcementText.color = new Color(0.8f, 0.22f, 0.25f);
-				announcementText.enabled = true;
-				
-				aso.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
-				aso.Play();
-			
-			}
-			else
-				StartCoroutine(JustScored(1));
-			
-		}
-
-		player1Score.text = "" + pointsPlayer1;
-		player2Score.text = "" + pointsPlayer2;
+		PlayerScoreCheck();
+		ChangeScoreText();
+	
 
 		if (betweenRounds)
 		{
 			ballDetection.timesHit = 0;
-			
 		}
 
 		if (Input.GetKeyUp(KeyCode.R))
@@ -87,6 +48,7 @@ public class RoundSystem : MonoBehaviour
 			
 	}
 
+	
 	IEnumerator JustScored(int playerNumber)
 	{
 		aso.pitch = UnityEngine.Random.Range(0.93f, 1.11f);
@@ -117,9 +79,62 @@ public class RoundSystem : MonoBehaviour
 		aso.Stop();
 	}
 
+	
 	void ResetGame()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	
+	void PlayerScoreCheck()
+	{
+		if (ballDetection.Player2Scored && !betweenRounds)
+		{
+			pointsPlayer2 += 1;
+			betweenRounds = true;
+			//rightConfetti.SetActive(true);
+			if (pointsPlayer2 >= maxScore)
+			{
+				announcementText.text = "Player 2 Wins!";
+				announcementText.color = new Color(0.23f, 0.41f, 1f);
+				announcementText.enabled = true;
+				
+				aso.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				aso.Play();
+				
+			}
+			else
+				StartCoroutine(JustScored(2));
+
+		}
+		else if (ballDetection.Player1Scored && !betweenRounds)
+		{
+			pointsPlayer1 += 1;
+			betweenRounds = true;
+			//leftConfetti.SetActive(true);
+			if (pointsPlayer1 >= maxScore)
+			{
+				announcementText.text = "Player 1 Wins!";
+				announcementText.color = new Color(0.8f, 0.22f, 0.25f);
+				announcementText.enabled = true;
+				
+				aso.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+				aso.Play();
+			
+			}
+			else
+				StartCoroutine(JustScored(1));
+			
+		}
+	}
+
+	void ChangeScoreText()
+	{
+		if (pointsPlayer1 < 10) player1Score.text = "0" + pointsPlayer1;
+		else player1Score.text = "" + pointsPlayer1;
+		
+		if(pointsPlayer2 < 10) 	player2Score.text = "0" + pointsPlayer2;
+		else 	player2Score.text = "" + pointsPlayer2;
 	}
 
 }

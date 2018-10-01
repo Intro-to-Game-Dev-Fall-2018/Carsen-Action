@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 	private bool landed = true;
 	private Rigidbody2D rb;
 	private CircleCollider2D floorSensor;
+	private SpriteRenderer sr;
 	
 	public int playerNumber = 0;
 	public GameObject subPlayer;
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 //		}
 
 		rb = GetComponent<Rigidbody2D>();
+		sr = GetComponent<SpriteRenderer>();
 		playerChainDistance = transform.position - subPlayer.transform.position;
 
 	}
@@ -35,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
 	void Update ()
 	{	
 		rb.position = subPlayer.transform.position + playerChainDistance;
+		
 	}
 
 	private void FixedUpdate()
@@ -80,6 +83,9 @@ public class PlayerMovement : MonoBehaviour
 			rb.AddForce(new Vector2(0.0f, jumpHeight));
 		}
 
+		if (rb.velocity.x < 0) sr.flipX = false;
+		else if (rb.velocity.x > 0) sr.flipX = true;
+
 //		if (Input.GetAxis("Jump" + playerNumber) == 0 && !landed && rb.velocity.y > 0)
 //		{
 //			rb.gravityScale = 5;
@@ -92,8 +98,8 @@ public class PlayerMovement : MonoBehaviour
 //		{
 //			rb.gravityScale = 3;
 //		}
-		
-		
+
+
 	}
 	
 	
