@@ -12,13 +12,17 @@ public class BallScript : MonoBehaviour {
 	public float hitStrength = 1;
 	public Text player1Hits, player2Hits;
 	public float minSpeedX, minSpeedY, maxSpeedX, maxSpeedY;
-	public AudioClip hitPlayerSound;
+	public AudioClip hitPlayerSound, stopBallSound;
+	public float maxCooldown;
+	public Slider p1CooldownMeter, p2CooldownMeter;
+	public float ballFreezeTime;
 
 	private int currentHitter = 0;
 	private bool betweenHits = false;
 
 	private Rigidbody2D rb;
 	private AudioSource aso;
+	private ParticleSystem particles;
 
 	[HideInInspector] public bool Player2Scored = false;
 	[HideInInspector] public bool Player1Scored = false;
@@ -32,21 +36,34 @@ public class BallScript : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D>();
 		aso = GetComponent<AudioSource>();
+		particles = GetComponent<ParticleSystem>();
 		
 		player1Hits.text = "";
 		player2Hits.text = "";
+
+		p1CooldownMeter.maxValue = maxCooldown;
+		p1CooldownMeter.value = maxCooldown;
+		
+		p2CooldownMeter.maxValue = maxCooldown;
+		p2CooldownMeter.value = maxCooldown;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
+		StopTimePower();
+		
+		p1CooldownMeter.value += Time.deltaTime;
+		p2CooldownMeter.value += Time.deltaTime;
+		
+		
 		if (timesHit > 3)
 		{
 			if (currentHitter == 1) Player2Scored = true;
 			else if (currentHitter == 2) Player1Scored = true;
 
 			timesHit = 0;
-			
-			
 		}
 
 		if (timesHit == 0)
@@ -60,6 +77,7 @@ public class BallScript : MonoBehaviour {
 	{
 //		For velocity debugging:
 //		rbvel = rb.velocity;
+		
 		
 		//Limit minimum speed so it doesn't go too slow
 		if (!rb.isKinematic)
@@ -117,6 +135,7 @@ public class BallScript : MonoBehaviour {
 			
 	}
 
+	
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other == leftScore)
@@ -137,6 +156,8 @@ public class BallScript : MonoBehaviour {
 		
 	}
 
+	/*If the ball hits a player, it will increase the hit count by 1. If the hit count > 3, the other player scores.
+		 It also plays a different noise if the player hits the ball. Displays a small counter for the amount of hits.*/
 	private void OnCollisionEnter2D(Collision2D other)
 	{
 		
@@ -195,10 +216,44 @@ public class BallScript : MonoBehaviour {
 		}
 	}
 
+	
+	//Small timer between hits so two super fast hits in succession will not instantly make you lose the round.
 	IEnumerator HitTimer()
 	{
 		betweenHits = true;
 		yield return new WaitForSeconds(0.5f);
 		betweenHits = false;
 	}
+
+	
+	//A player ability which stops the ball for a short time!
+	void StopTimePower()
+	{
+		
+		if (Input.GetKeyDown(KeyCode.E) && p1CooldownMeter.value == maxCooldown)
+		{
+			rb.isKinematic = true;
+			rb.velocity = new Vector2(0f, 0f);
+			p1CooldownMeter.value = 0;
+			StartCoroutine(BallIsFrozen());
+		}
+		if (Input.GetKeyDown(KeyCode.RightShift) && p2CooldownMeter.value == maxCooldown)
+		{
+			rb.isKinematic = true;
+			rb.velocity = new Vector2(0f, 0f);
+			p2CooldownMeter.value = 0;
+			StartCoroutine(BallIsFrozen());
+		}
+		
+	}
+
+	IEnumerator BallIsFrozen()
+	{
+		aso.PlayOneShot(stopBallSound);
+		particles.Play();
+		yield return new WaitForSeconds(ballFreezeTime);
+		rb.isKinematic = false;
+	}
+
+	
 }

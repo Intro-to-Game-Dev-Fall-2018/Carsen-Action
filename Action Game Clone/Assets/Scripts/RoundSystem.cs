@@ -48,7 +48,10 @@ public class RoundSystem : MonoBehaviour
 			
 	}
 
-	
+	/*Executes when a player has scored, creates a short lull between scoring and the ball resetting.
+	 Sets the ball to the opposite spawn point of the player who scored, as a kinematic rb to keep it in place
+	 until the player hits it.
+	*/
 	IEnumerator JustScored(int playerNumber)
 	{
 		aso.pitch = UnityEngine.Random.Range(0.93f, 1.11f);
@@ -80,19 +83,22 @@ public class RoundSystem : MonoBehaviour
 	}
 
 	
+	//Resets the game by reloading the scene.
 	void ResetGame()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
 	
+	/* If a player has scored (ball hits the floor or a player hits the ball 3 times), it adds 1 to their score count.
+	 If the player's score reaches the max score, they win, and confetti rains down forever! */
 	void PlayerScoreCheck()
 	{
 		if (ballDetection.Player2Scored && !betweenRounds)
 		{
 			pointsPlayer2 += 1;
 			betweenRounds = true;
-			//rightConfetti.SetActive(true);
+			rightConfetti.SetActive(true);
 			if (pointsPlayer2 >= maxScore)
 			{
 				announcementText.text = "PLAYER 2 WINS!";
@@ -111,7 +117,7 @@ public class RoundSystem : MonoBehaviour
 		{
 			pointsPlayer1 += 1;
 			betweenRounds = true;
-			//leftConfetti.SetActive(true);
+			leftConfetti.SetActive(true);
 			if (pointsPlayer1 >= maxScore)
 			{
 				announcementText.text = "PLAYER 1 WINS!";
@@ -128,6 +134,8 @@ public class RoundSystem : MonoBehaviour
 		}
 	}
 
+	
+	//Changes the text of the score counters at the top, keeps 2 digit format of 00 when below 10
 	void ChangeScoreText()
 	{
 		if (pointsPlayer1 < 10) player1Score.text = "0" + pointsPlayer1;
